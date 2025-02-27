@@ -6,7 +6,7 @@ export default function Index() {
     return (
         <View>
             <Text>This is Index Page</Text>
-            {/* <Redirect href={'/login/login'} /> */}
+            <Redirect href={'/login/login'} />
         </View>
     )
 }
