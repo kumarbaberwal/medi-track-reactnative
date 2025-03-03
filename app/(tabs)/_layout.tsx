@@ -1,33 +1,24 @@
 import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Tabs, useRouter } from "expo-router";
+import { Redirect, Tabs, useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/configs/FirebaseConfig";
+import { getLocalStorage } from "@/service/Storage";
 
 export default function TabsLayout() {
   const router = useRouter();
-  const [authenticated, setAuthenticated] = useState(false);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/auth.user
-      const uid = user.uid;
-      console.log(uid);
-      setAuthenticated(true);
-      // ...
-    } else {
-      // User is signed out
-      // ...
-      setAuthenticated(false);
+
+  const getUser = async () => {
+    const userInfo = await getLocalStorage({ key: 'user' });
+    if (!userInfo) {
+      router.replace('/login/logIn');
     }
-  });
+  }
 
   useEffect(() => {
-    if (authenticated === false) {
-      router.push("/login/logIn");
-    }
-  }, [authenticated]);
+    getUser();
+  }, []);
   return (
     <Tabs
       screenOptions={{

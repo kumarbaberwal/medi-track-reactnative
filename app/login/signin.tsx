@@ -4,6 +4,7 @@ import { Alert, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, Vie
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/configs/FirebaseConfig";
 import { useState } from "react";
+import { setLocalStorage } from "@/service/Storage";
 
 
 export default function SignIn() {
@@ -20,11 +21,12 @@ export default function SignIn() {
     }
 
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in 
         const user = userCredential.user;
         ToastAndroid.show("Login Successful!", ToastAndroid.BOTTOM);
         // Alert.alert("Login Successfull", '')
+        await setLocalStorage({ key: 'user', value: user });
         router.push('/(tabs)');
         // ...
       })

@@ -4,6 +4,7 @@ import { Alert, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, Vie
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "@/configs/FirebaseConfig";
+import { setLocalStorage } from "@/service/Storage";
 
 export default function SignUp() {
   const router = useRouter();
@@ -25,6 +26,8 @@ export default function SignUp() {
         await updateProfile(user, {
           displayName: username
         });
+        await setLocalStorage({ key: 'user', value: user });
+
         router.push('/(tabs)');
         // ...
       })
