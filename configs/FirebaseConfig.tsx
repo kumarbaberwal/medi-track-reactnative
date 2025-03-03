@@ -7,7 +7,7 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyA4qW3gLXzxO00VuinV_RerXXIu2oqacV8",
+    apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
     authDomain: "meditracker-229e4.firebaseapp.com",
     projectId: "meditracker-229e4",
     storageBucket: "meditracker-229e4.firebasestorage.app",
