@@ -1,60 +1,66 @@
 import Colors from "@/constant/Colors";
 import { useRouter } from "expo-router";
 import { Alert, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/configs/FirebaseConfig";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
+import { auth } from "@/configs/FirebaseConfig";
 
-
-export default function SignIn() {
+export default function SignUp() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
-  const onSignIn = () => {
+  const onCreateAccount = () => {
 
-
-    if (!email || !password) {
+    if (!email || !password || !username) {
       ToastAndroid.show("Please fill all details", ToastAndroid.BOTTOM);
       Alert.alert('Fields Missing', 'Please fill all details!');
     }
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        // Signed up 
         const user = userCredential.user;
-        ToastAndroid.show("Login Successful!", ToastAndroid.BOTTOM);
-        // Alert.alert("Login Successfull", '')
+        console.log(user);
+        await updateProfile(user, {
+          displayName: username
+        });
         router.push('/(tabs)');
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-
-        if (errorCode === 'auth/invalid-credential') {
-          ToastAndroid.show('Please provide valid email or password', ToastAndroid.BOTTOM);
-          Alert.alert('Login Failed', 'Please provide the correct email or password');
+        console.log(errorCode);
+        if (errorCode === 'auth/email-already-in-use') {
+          ToastAndroid.show('Email already exists', ToastAndroid.BOTTOM);
+          Alert.alert('Register Failed', 'Email already exists!');
         }
+        // ..
       });
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.textHeader}>
-        Let's Sign You In
+        Create New Account
       </Text>
-      <Text style={styles.textSubHeader}>
-        Welcome Back
-      </Text>
-      <Text style={styles.textSubHeader}>
-        You've been missed !
-      </Text>
+      <View style={styles.textInputContainer}>
+        <Text>
+          Full Name
+        </Text>
+        <TextInput placeholder="Full Name"
+          style={styles.textInput}
+          onChangeText={(value) => setUsername(value)}
+        />
+      </View>
       <View style={styles.textInputContainer}>
         <Text>
           Email
         </Text>
-        <TextInput placeholder="Email" style={styles.textInput}
+        <TextInput
+          placeholder="Email"
+          style={styles.textInput}
           onChangeText={(value) => setEmail(value)}
         />
       </View>
@@ -69,15 +75,15 @@ export default function SignIn() {
         />
       </View>
       <TouchableOpacity style={styles.button}
-        onPress={onSignIn}
+        onPress={onCreateAccount}
       >
         <Text style={styles.buttonText}>
-          Login
+          Create Account
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonCreate} onPress={() => router.push('/login/signUp')}>
+      <TouchableOpacity style={styles.buttonCreate} onPress={() => router.push('/login/signIn')}>
         <Text style={styles.buttonCreateText}>
-          Create Account
+          Already Account? Sign In
         </Text>
       </TouchableOpacity>
     </View>
