@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { Redirect } from 'expo-router'
 import Header from '@/components/Header';
+import EmptyState from '@/components/EmptyState';
 
 export default function Index() {
   return (
@@ -9,6 +10,7 @@ export default function Index() {
       style={styles.container}
     >
       <Header />
+      <EmptyState />
     </View>
   )
 }

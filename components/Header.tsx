@@ -1,5 +1,6 @@
 import { getLocalStorage, removeLocalStorage } from "@/service/Storage";
 import { useEffect, useState } from "react";
+import Feather from '@expo/vector-icons/Feather';
 import { Button, Image, StyleSheet, Text, View } from "react-native";
 
 export default function Header() {
@@ -21,18 +22,24 @@ export default function Header() {
         setUser(userInfo);
     }
     return (
-        <View>
+        <View style={styles.container}>
+
             <View
-                style={styles.container}
+                style={styles.allItems}
             >
-                <Image source={require('./../assets/images/smiley.png')}
-                    style={styles.smiley}
-                />
-                <Text
-                    style={styles.headerText}
+                <View
+                    style={styles.subContainer}
                 >
-                    Hello! {user?.displayName}
-                </Text>
+                    <Image source={require('./../assets/images/smiley.png')}
+                        style={styles.smiley}
+                    />
+                    <Text
+                        style={styles.headerText}
+                    >
+                        Hello! {user?.displayName}
+                    </Text>
+                </View>
+                <Feather name="settings" size={34} color="black" />
             </View>
         </View>
     )
@@ -40,6 +47,15 @@ export default function Header() {
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 20,
+    },
+    allItems: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    subContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
