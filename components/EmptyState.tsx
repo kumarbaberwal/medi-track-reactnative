@@ -1,7 +1,11 @@
+import Colors from "@/constant/Colors";
 import ConstantString from "@/constant/ConstantString";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function EmptyState() {
+
+    const router = useRouter();
     return (
         <View
             style={styles.container}
@@ -15,9 +19,17 @@ export default function EmptyState() {
             >
                 {ConstantString.NoMedication}
             </Text>
-            <Text>
-                {ConstantString.AddNewMediciationBtn}
+            <Text style={styles.medicationSubText}>
+                {ConstantString.MedicationSubText}
             </Text>
+            <TouchableOpacity
+                style={styles.addNewMedicationBtn}
+                onPress={() => router.push('/addNewMedication/addNewMedication')}
+            >
+                <Text style={styles.addNewMedicationBtnText}>
+                    {ConstantString.AddNewMediciationBtn}
+                </Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -35,5 +47,23 @@ const styles = StyleSheet.create({
         fontSize: 35,
         fontWeight: 'bold',
         marginTop: 30,
+    },
+    medicationSubText: {
+        fontSize: 16,
+        color: Colors.DARK_GRAY,
+        textAlign: 'center',
+        marginTop: 20,
+    },
+    addNewMedicationBtn: {
+        backgroundColor: Colors.PRIMARY,
+        padding: 15,
+        borderRadius: 10,
+        marginTop: 30,
+        width: '100%',
+    },
+    addNewMedicationBtnText: {
+        textAlign: 'center',
+        fontSize: 17,
+        color: 'white',
     }
 })
